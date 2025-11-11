@@ -1,0 +1,522 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Temperature Control System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .nav-buttons a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-buttons a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .settings-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .settings-container h2 {
+            margin-bottom: 30px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .settings-container h2 i {
+            color: #667eea;
+            font-size: 1.5em;
+        }
+
+        .settings-group {
+            margin-bottom: 40px;
+        }
+
+        .settings-group h3 {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-group h3 i {
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 8px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-primary:active {
+            transform: translateY(0);
+        }
+
+        .button-secondary {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .button-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .range-display {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .range-display p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .range-display strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .settings-container {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-cog"></i> Settings</h1>
+            <p>Configure Temperature Control Parameters</p>
+        </header>
+
+        <div class="nav-buttons">
+            <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="{% url 'settings' %}"><i class="fas fa-cog"></i> Settings</a>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <div class="settings-container">
+            <!-- Temperature Setpoint Section -->
+            <h2>
+                <i class="fas fa-thermometer-half"></i> Temperature Control
+            </h2>
+
+            <div class="settings-group">
+                <h3><i class="fas fa-bullseye"></i> Target Setpoint</h3>
+                
+                <div class="card">
+                    <div class="card-title">Current Target Temperature</div>
+                    <div class="card-description">
+                        Set the desired water temperature. The system will automatically heat or cool to reach and maintain this target temperature using PID control.
+                    </div>
+                </div>
+
+                <form id="setpointForm">
+                    <div class="form-group">
+                        <label for="setpoint">Target Temperature (°C)</label>
+                        <input 
+                            type="number" 
+                            id="setpoint" 
+                            step="0.1" 
+                            min="{{ min_setpoint }}" 
+                            max="{{ max_setpoint }}"
+                            value="{{ setpoint }}"
+                            required
+                        >
+                        <small>Valid range: {{ min_setpoint }}°C to {{ max_setpoint }}°C</small>
+                    </div>
+
+                    <div class="range-display">
+                        <p><strong>Minimum:</strong> <span id="minDisplay">{{ min_setpoint }}</span>°C</p>
+                        <p><strong>Current:</strong> <span id="currentDisplay">{{ setpoint }}</span>°C</p>
+                        <p><strong>Maximum:</strong> <span id="maxDisplay">{{ max_setpoint }}</span>°C</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="button button-primary">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="reset" class="button button-secondary">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- System Information Section -->
+            <h2 style="margin-top: 50px;">
+                <i class="fas fa-info-circle"></i> System Information
+            </h2>
+
+            <div class="settings-group">
+                <h3><i class="fas fa-microchip"></i> Hardware Configuration</h3>
+                
+                <div class="card">
+                    <div class="card-title">Water Temperature Sensor</div>
+                    <div class="card-description">DS18B20 Digital Temperature Sensor - Digital Pin 6</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Air Sensor</div>
+                    <div class="card-description">DHT22 - Temperature & Humidity Sensor - Digital Pin 7</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Heater Control</div>
+                    <div class="card-description">Relay-controlled heating element - Digital Pin 8</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Cooling Control</div>
+                    <div class="card-description">Relay-controlled fan/cooling element - Digital Pin 9</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Display</div>
+                    <div class="card-description">I2C LCD 16x2 - I2C Address 0x27</div>
+                </div>
+            </div>
+
+            <!-- Control Algorithm Section -->
+            <h2 style="margin-top: 50px;">
+                <i class="fas fa-cogs"></i> Control Algorithm
+            </h2>
+
+            <div class="settings-group">
+                <h3><i class="fas fa-code"></i> PID Control System</h3>
+                
+                <div class="card">
+                    <div class="card-title">Control Method</div>
+                    <div class="card-description">
+                        PID (Proportional-Integral-Derivative) feedback control with time-proportional output modulation
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Control Window</div>
+                    <div class="card-description">5-second time window for proportional output control</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Sensor Reading Interval</div>
+                    <div class="card-description">Sensor readings and system updates occur every 2 seconds</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Communication Protocol</div>
+                    <div class="card-description">Serial Communication at 9600 baud with Raspberry Pi</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Data Format</div>
+                    <div class="card-description">
+                        Sensor data sent as JSON: {WA:temp, AI:temp, HU:humidity, SP:setpoint, PWR:output}<br>
+                        Commands received as: SET:temperature
+                    </div>
+                </div>
+            </div>
+
+            <!-- Safety Section -->
+            <h2 style="margin-top: 50px;">
+                <i class="fas fa-shield-alt"></i> Safety Information
+            </h2>
+
+            <div class="settings-group">
+                <div class="card" style="border-left-color: #ff9800;">
+                    <div class="card-title">Temperature Limits</div>
+                    <div class="card-description">
+                        The setpoint is limited between {{ min_setpoint }}°C and {{ max_setpoint }}°C to ensure safe system operation and prevent equipment damage.
+                    </div>
+                </div>
+
+                <div class="card" style="border-left-color: #f44336;">
+                    <div class="card-title">Relay Safety</div>
+                    <div class="card-description">
+                        Relays are active-LOW configuration. Both heater and fan default to OFF (HIGH) for safe startup.
+                    </div>
+                </div>
+
+                <div class="card" style="border-left-color: #4caf50;">
+                    <div class="card-title">System Monitoring</div>
+                    <div class="card-description">
+                        The system continuously monitors sensor readings and maintains real-time feedback through the dashboard. Any system anomalies should be investigated immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert ${type}`;
+            
+            setTimeout(() => {
+                alertDiv.className = 'alert';
+            }, 5000);
+        }
+
+        function updateCurrentDisplay() {
+            const setpointInput = document.getElementById('setpoint');
+            const value = parseFloat(setpointInput.value);
+            if (!isNaN(value)) {
+                document.getElementById('currentDisplay').textContent = value.toFixed(1);
+            }
+        }
+
+        document.getElementById('setpoint').addEventListener('change', updateCurrentDisplay);
+        document.getElementById('setpoint').addEventListener('input', updateCurrentDisplay);
+
+        document.getElementById('setpointForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newSetpoint = parseFloat(document.getElementById('setpoint').value);
+            const minSetpoint = parseFloat(document.getElementById('setpoint').min);
+            const maxSetpoint = parseFloat(document.getElementById('setpoint').max);
+
+            if (isNaN(newSetpoint)) {
+                showAlert('Please enter a valid temperature value', 'error');
+                return;
+            }
+
+            if (newSetpoint < minSetpoint || newSetpoint > maxSetpoint) {
+                showAlert(`Setpoint must be between ${minSetpoint}°C and ${maxSetpoint}°C`, 'error');
+                return;
+            }
+
+            fetch(`${API_BASE}/setpoint/set/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ setpoint: newSetpoint })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showAlert(`✓ Setpoint successfully updated to ${newSetpoint}°C`, 'success');
+                } else {
+                    showAlert(`✗ ${data.message}`, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('Error updating setpoint. Please try again.', 'error');
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
