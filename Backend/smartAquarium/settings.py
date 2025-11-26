@@ -133,3 +133,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static/')
 ]
+
+# MQTT Settings
+MQTT_USER = 'your_mqtt_username'
+MQTT_PASSWORD = 'your_mqtt_password'
+MQTT_SERVER = 'broker.hivemq.com'
+MQTT_PORT = 1883
+MQTT_KEEPALIVE = 60
+
