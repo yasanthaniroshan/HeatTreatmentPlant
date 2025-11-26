@@ -478,6 +478,7 @@
     <script>
         const API_BASE = '/api';
         let updateInterval;
+        let setpointvalue = null;
 
         function formatTime(isoString) {
             if (!isoString) return '--';
@@ -517,7 +518,7 @@
                     document.getElementById('pidStatus').textContent = pidStatusText;
                     
                     document.getElementById('updateTime').textContent = formatTime(data.timestamp);
-                    document.getElementById('newSetpoint').value = data.setpoint;
+                    // document.getElementById('newSetpoint').value = data.setpoint;
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
